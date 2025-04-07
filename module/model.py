@@ -14,7 +14,7 @@ def build_model(model_name):
 class ResNet50(nn.Module):
   def __init__(self, num_classes=1):
     super().__init__()
-    self.model = timm.create_model("resnet50", pretrained=True)
+    self.model = timm.create_model("resnet50", pretrained=False)
     self.model.fc = nn.Linear(in_features=2048, out_features=num_classes)
   
   def forward(self, x):
