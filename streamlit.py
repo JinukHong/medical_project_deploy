@@ -13,12 +13,29 @@ from module.model import ResNet50
 
 import streamlit as st
 
+import os
+import gdown
+
+def download_if_not_exists(file_path, gdrive_id):
+    if not os.path.exists(file_path):
+        url = f"https://drive.google.com/uc?id={gdrive_id}"
+        gdown.download(url, file_path, quiet=False)
+
+
 @st.cache_data
 def get_model():
-    keypoint_model = YOLO("yolov8n-pose.pt")
+    # 다운로드 경로와 ID 지정
+    resnet_path = "ckpt/ResNet50_v0.pth"
+    yolo_path = "yolov8n-pose.pt"
+    
+    download_if_not_exists(resnet_path, "130N1bBrYHrXtJao6Jq2JlQA6RgVS3jgx")
+    download_if_not_exists(yolo_path, "1htemHZjg3kYa98tFZusBOGb2CbYPG_YR")
+
+    keypoint_model = YOLO(yolo_path)
     model = ResNet50()
-    ckpt = torch.load("ckpt/ResNet50_v0.pth", map_location='cpu')
+    ckpt = torch.load(resnet_path, map_location='cpu')
     model.load_state_dict(ckpt["model_state_dict"])
+    
     return keypoint_model, model
 
 st.title("척추측만증 예측")
