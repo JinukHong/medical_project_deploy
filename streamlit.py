@@ -17,17 +17,18 @@ import os
 import gdown
 
 def download_if_not_exists(file_path, gdrive_id):
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # 디렉토리 자동 생성
+    dir_path = os.path.dirname(file_path)
+    if dir_path != "":
+        os.makedirs(dir_path, exist_ok=True)
     if not os.path.exists(file_path):
         url = f"https://drive.google.com/uc?id={gdrive_id}"
         gdown.download(url, file_path, quiet=False)
-
 
 @st.cache_data
 def get_model():
     # 다운로드 경로와 ID 지정
     resnet_path = "ckpt/ResNet50_v0.pth"
-    yolo_path = "yolov8n-pose.pt"
+    yolo_path = "model/yolov8n-pose.pt"
     
     download_if_not_exists(resnet_path, "130N1bBrYHrXtJao6Jq2JlQA6RgVS3jgx")
     download_if_not_exists(yolo_path, "1htemHZjg3kYa98tFZusBOGb2CbYPG_YR")
