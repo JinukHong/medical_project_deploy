@@ -24,7 +24,7 @@ def download_if_not_exists(file_path, gdrive_id):
         url = f"https://drive.google.com/uc?id={gdrive_id}"
         gdown.download(url, file_path, quiet=False)
 
-@st.cache_data
+@st.cache_resource
 def get_model():
     # 다운로드 경로와 ID 지정
     resnet_path = "ckpt/ResNet50_v0.pth"
